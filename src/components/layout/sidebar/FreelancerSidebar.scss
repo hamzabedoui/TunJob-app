@@ -1,0 +1,20 @@
+// FreelancerSidebar.scss
+
+.SidebarContainer {
+    width: 250px;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .UserInfoContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .UserName {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+  
