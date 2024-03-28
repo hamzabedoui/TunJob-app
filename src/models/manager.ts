@@ -17,9 +17,9 @@ const managerSchema: Schema<ManagerDocument> = new mongoose.Schema({
 });
 
 // Pre-save hook for hashing password
-managerSchema.pre<ManagerDocument>("save", async function (next) {
+/* managerSchema.pre<ManagerDocument>("save", async function (next) {
   await User.schema.methods.save.call(this, next);
-});
+}); */
 
 // Extend User model to create Manager model
 const Manager: Model<ManagerDocument> = User.discriminator<ManagerDocument>(

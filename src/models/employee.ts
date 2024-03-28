@@ -18,9 +18,9 @@ const employeeSchema: Schema<EmployeeDocument> = new mongoose.Schema({
 });
 
 // Pre-save hook for hashing password
-employeeSchema.pre<EmployeeDocument>("save", async function (next) {
+/* employeeSchema.pre<EmployeeDocument>("save", async function (next) {
   await User.schema.methods.save.call(this, next);
-});
+}); */
 
 // Extend User model to create Employee model
 const Employee: Model<EmployeeDocument> = User.discriminator<EmployeeDocument>(
