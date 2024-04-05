@@ -1,37 +1,34 @@
-/* import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { Response, Request, NextFunction } from "express";
+import jwt, { Secret } from "jsonwebtoken";
+import User from "../models/user";
+import asyncHandler from "express-async-handler";
 import { UnauthenticatedError } from "../errors";
-import {ProtectedRequest} from "../types/index";
+import { StatusCodes } from "http-status-codes";
 
-const auth = async (
-  req: ProtectedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  // check header
-  const authHeader = req.headers.authorization;
-  if (
-    !authHeader ||
-    typeof authHeader !== "string" ||
-    !authHeader.startsWith("Bearer")
-  ) {
-    throw new UnauthenticatedError("Authentication invalid");
+export const authentification = asyncHandler(
+  async (req: Request | any, res: Response | any, next: NextFunction) => {
+    try {
+      const auth = req.headers.authorization;
+      if (!auth) {
+        throw new UnauthenticatedError("user is not logged in");
+      }
+      const accessToken = auth.split(" ")[1];
+      const jwtSecret = process.env.JWT_SECRET as Secret;
+      const payload = jwt.verify(accessToken, jwtSecret);
+      const { userID } = payload as any;
+      if (!userID) {
+        throw new UnauthenticatedError("invalid token");
+      }
+      const user = await User.findById(userID);
+      req.user = user;
+      next();
+    } catch (error: any) {
+      console.log(error);
+      if (error.name === "TokenExpiredError") {
+        return res.send("token expired");
+      }
+
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("server error");
+    }
   }
-  const token = authHeader.split(" ")[1];
-
-  try {
-    const payload: { userId: string } = jwt.verify(
-      token,
-      process.env.JWT_SECRET
-    ) as { userId: string };
-    // attach the user to the job routes
-    const testUser: boolean = payload.userId === "62f801d0510a7c1ed2312d52";
-    req.user = { userId: payload.userId, testUser };
-    next();
-  } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
-  }
-};
-
-export default auth;
- */
+);

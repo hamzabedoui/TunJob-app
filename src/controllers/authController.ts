@@ -11,7 +11,7 @@ import {
 import { Request, Response } from "express";
 export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await User.find();
-  res.json({ users });
+  res.status(StatusCodes.OK).json({ users });
 });
 export const registerMg = asyncHandler(async (req: Request, res: Response) => {
   const { name, email, password, company } = req.body;
@@ -23,7 +23,7 @@ export const registerMg = asyncHandler(async (req: Request, res: Response) => {
     throw new BadRequestError("user with this email already exists");
   } else {
     const manager = await Manager.create({ ...req.body });
-    res.json(manager);
+    res.status(StatusCodes.CREATED).json(manager);
   }
 });
 export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
@@ -41,7 +41,7 @@ export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
       name,
       experience,
     });
-    res.json(employee);
+    res.status(StatusCodes.CREATED).json(employee);
   }
 });
 interface LoginInput {
@@ -65,12 +65,10 @@ export const login = asyncHandler(
       }
 
       const token = user?.generateToken();
-      /*  const cookieOptions = {
+      const cookieOptions = {
         expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
       };
-      console.log(cookieOptions.expires);
-
-      res.cookie("token", token, cookieOptions); */
+      res.cookie("token", token, cookieOptions);
       res
         .status(StatusCodes.OK)
         .json({ messsage: "user logged in successfully", user, token });

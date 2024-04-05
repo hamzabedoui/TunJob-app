@@ -1,7 +1,9 @@
 import { authRouter } from "./auth";
+import { jobRouter } from "./jobs";
 import express from "express";
-/* import {authenticationMiddleware} from '../middleware/authentication' */
+import { authentification } from "../middleware/authentification";
 
 export const router = express.Router();
 
 router.use("/api/v1/auth", authRouter);
+router.use("/api/v1/jobs", authentification, jobRouter);
