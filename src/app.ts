@@ -9,12 +9,12 @@ import { router } from "./routes/index";
 require("dotenv").config();
 
 //mware
-/* app.use(
+app.use(
   cors({
     origin: "*",
     credentials: true,
   })
-); */
+);
 app.use(express.json());
 //routes
 app.use(router);
