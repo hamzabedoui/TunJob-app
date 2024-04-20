@@ -27,8 +27,8 @@ export const registerMg = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password, experience } = req.body;
-  if (!email || !password || !name || !experience) {
+  const { name, email, password, academicLevel } = req.body;
+  if (!email || !password || !name || !academicLevel) {
     throw new BadRequestError("please provide all credentials");
   }
   const duplicate = await Employee.findOne({ email });
@@ -39,7 +39,7 @@ export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
       email,
       password,
       name,
-      experience,
+      academicLevel,
     });
     res.status(StatusCodes.CREATED).json(employee);
   }

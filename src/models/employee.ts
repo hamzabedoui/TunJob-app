@@ -5,15 +5,22 @@ import User, { UserDocument } from "./user";
 
 // Define EmployeeDocument extending UserDocument
 export interface EmployeeDocument extends UserDocument {
-  experience: number;
+  academicLevel: string;
 }
 
 // Create employeeSchema extending userSchema
 const employeeSchema: Schema<EmployeeDocument> = new mongoose.Schema({
   /* ...User.schema.obj, */
-  experience: {
-    type: Number,
-    required: [true, "Please provide experience"],
+  academicLevel: {
+    type: String,
+    enum: [
+      "baccalaureate-degree",
+      "high-school",
+      "license degree",
+      "masters-degree",
+      "engeneering-degree",
+    ],
+    required: [true, "Please provide academicLevel"],
   },
 });
 

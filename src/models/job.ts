@@ -5,6 +5,7 @@ interface IJob extends Document {
   position: string;
   status: "interview" | "declined" | "pending";
   manager: mongoose.Types.ObjectId;
+  applications: mongoose.Types.ObjectId[];
   jobType: "full-time" | "part-time" | "remote" | "internship";
   jobLocation: string;
 }
@@ -41,8 +42,20 @@ const JobSchema: Schema<IJob> = new Schema<IJob>(
       default: "my city",
       required: true,
     },
+    applications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      },
+    ],
   },
   { timestamps: true }
 );
-
+JobSchema.pre(/^find/, function (this: any, next) {
+  if (this.options._recursed) {
+    return next();
+  }
+  this.populate({ path: "manager applications", options: { _recursed: true } });
+  next();
+});
 export default mongoose.model<IJob>("Job", JobSchema);

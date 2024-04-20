@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import asyncHandler from "express-async-handler";
 import Job from "../models/job";
 
-import {} from "module";
 import {
   BadRequestError,
   UnauthenticatedError,
@@ -19,8 +18,16 @@ export const getAllJobs = asyncHandler(async (req: Request, res: Response) => {
 export const createJob = asyncHandler(
   async (req: Request | any, res: Response) => {
     const { position, status, jobType, jobLocation } = req.body;
+    if (!position || !status || !jobType || !jobLocation) {
+      throw new BadRequestError("provide credentials");
+    }
     const managerId = req.user.id;
     const manager = await Manager.findById(managerId);
+    if (!manager) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send("unauthorized to access this route");
+    }
     const job = await Job.create({
       company: manager?.company,
       position,
@@ -32,19 +39,28 @@ export const createJob = asyncHandler(
     res.status(StatusCodes.CREATED).json({ job });
   }
 );
-export const updateJob = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { position, status, jobType, jobLocation } = req.body;
-  let job = await Job.findOne({ _id: id });
-  if (!job) throw new NotFoundError("job not found");
+export const updateJob = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    const managerId = req.user.id;
+    const manager = await Manager.findById(managerId);
+    if (!manager) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send("unauthorized to access this route");
+    }
+    const { id } = req.params;
+    const { position, status, jobType, jobLocation } = req.body;
+    let job = await Job.findOne({ _id: id });
+    if (!job) throw new NotFoundError("job not found");
 
-  job = await Job.findByIdAndUpdate(
-    id,
-    { position, status, jobType, jobLocation },
-    { new: true }
-  );
-  res.status(StatusCodes.OK).json({ job, message: "job updated" });
-});
+    job = await Job.findByIdAndUpdate(
+      id,
+      { position, status, jobType, jobLocation },
+      { new: true }
+    );
+    res.status(StatusCodes.OK).json({ job, message: "job updated" });
+  }
+);
 export const getJob = asyncHandler(async (req: Request, res: Response) => {
   const job = await Job.findById(req.params.id);
   if (!job) {
@@ -52,13 +68,22 @@ export const getJob = asyncHandler(async (req: Request, res: Response) => {
   }
   res.status(StatusCodes.OK).json({ job });
 });
-export const deleteJob = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const job = await Job.findById(id);
-  if (!job) {
-    throw new NotFoundError("job not found");
-  }
-  await Job.findByIdAndDelete(id);
+export const deleteJob = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    const managerId = req.user.id;
+    const manager = await Manager.findById(managerId);
+    if (!manager) {
+      res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send("unauthorized to access this route");
+    }
+    const { id } = req.params;
+    const job = await Job.findById(id);
+    if (!job) {
+      throw new NotFoundError("job not found");
+    }
+    await Job.findByIdAndDelete(id);
 
-  res.status(StatusCodes.OK).json("deleted job");
-});
+    res.status(StatusCodes.OK).json("deleted job");
+  }
+);
