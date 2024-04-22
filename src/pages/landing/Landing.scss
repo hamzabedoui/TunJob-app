@@ -1,0 +1,74 @@
+.page {
+  nav {
+    padding-top: 1rem;
+    padding-left: 5rem;
+    font-size: 16px;
+  }
+  .main {
+    // Styles for the container class
+    // Example:
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    flex-wrap: wrap;
+    .info {
+      // Styles for the info class
+      // Example:
+      background-color: transparent;
+      border-radius: 5px;
+      width: 600px;
+      .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      h1 {
+        // Styles for h1 elements inside the info class
+        // Example:
+        font-size: 24px;
+        color: #333;
+      }
+      span {
+        // Styles for span elements inside the info class
+        // Example:
+        color: #007dfe; /* Orange color */
+      }
+
+      p {
+        // Styles for p elements inside the info class
+        // Example:
+        font-size: 16px;
+        color: #666;
+      }
+
+      .btn-hero {
+        // Styles for the btn-hero class
+        // Example:
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007dfe; /* Blue color */
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-hero:hover {
+        // Hover styles for btn-hero class
+        background-color: #0056b3; /* Darker blue color on hover */
+      }
+    }
+
+    .main-img {
+      // Styles for the main-img class
+      // Example:
+      max-width: 100%;
+      height: auto;
+      object-fit: cover;
+      display: block;
+      // width: 600px;
+    }
+  }
+}
