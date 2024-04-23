@@ -32,7 +32,7 @@ const FreelancerSidebar: React.FC<{
             <ListItem button component={Link} to="/saved-jobs">
               <ListItemText primary="Saved Jobs" />
             </ListItem>
-            <ListItem button component={Link} to="/profile">
+            <ListItem button component={Link} to="/main-freelancer/profile">
               <ListItemText primary="Profile" />
             </ListItem>
             <ListItem button component={Link} to="/settings">
@@ -40,7 +40,6 @@ const FreelancerSidebar: React.FC<{
             </ListItem>
           </div>
         </List>
-
       </div>
 
       <Button fullWidth variant="outlined" onClick={handleSignOut}>

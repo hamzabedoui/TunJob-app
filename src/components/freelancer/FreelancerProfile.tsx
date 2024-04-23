@@ -1,10 +1,10 @@
 import React from "react";
 import { UserType, RegistrationData } from "../../types/types"; // Update the path to your types
 
-const FreelancerProfile: React.FC<RegistrationData> = ({
+const FreelancerProfile: React.FC<any> = ({
   username,
   email,
-  userType,
+  /* userType, */
   jobTitle,
   academicLevel,
   location,
@@ -19,23 +19,23 @@ const FreelancerProfile: React.FC<RegistrationData> = ({
         <p>
           <strong>Email:</strong> {email}
         </p>
-        <p>
+        {/* <p>
           <strong>User Type:</strong>{" "}
           {userType === UserType.Freelancer ? "Freelancer" : "Recruiter"}
-        </p>
-        {userType === UserType.Freelancer && (
-          <>
-            <p>
-              <strong>Job Title:</strong> {jobTitle}
-            </p>
-            <p>
-              <strong>Academic Level:</strong> {academicLevel}
-            </p>
-            <p>
-              <strong>Location:</strong> {location}
-            </p>
-          </>
-        )}
+        </p> */}
+        {/* {userType === UserType.Freelancer && ( */}
+        <>
+          <p>
+            <strong>Job Title:</strong> {jobTitle}
+          </p>
+          <p>
+            <strong>Academic Level:</strong> {academicLevel}
+          </p>
+          <p>
+            <strong>Location:</strong> {location}
+          </p>
+        </>
+        {/*  )} */}
         {/* Add additional fields based on your user data */}
       </div>
     </div>

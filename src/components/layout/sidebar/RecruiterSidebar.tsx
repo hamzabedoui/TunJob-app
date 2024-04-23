@@ -22,7 +22,7 @@ const RecruiterSidebar: React.FC<{
         </div>
         <List component="nav">
           <div className="nav-side">
-            <ListItem button component={Link} to="/dashboard/recruiter">
+            <ListItem button component={Link} to="/main-manager/dashboard">
               <ListItemText primary="Dashboard" />
             </ListItem>
             <ListItem button component={Link} to="/posted-jobs">
