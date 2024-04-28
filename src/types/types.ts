@@ -1,6 +1,6 @@
 export enum UserType {
-    Freelancer = "Freelancer",
-    Recruiter = "Recruiter",
+  Freelancer = "Freelancer",
+  Recruiter = "Recruiter",
 }
 export interface RegistrationData {
   userType: UserType;
@@ -21,10 +21,8 @@ export enum AcademicLevel {
 }
 
 export interface JobDetails {
-  title: string;
-  description: string;
-  requirements: string;
-  location: string;
-  salary: string;
-  // Add additional fields as needed
+  company: string;
+  position: string;
+  jobType: string;
+  jobLocation: string;
 }

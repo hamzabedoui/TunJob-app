@@ -1,13 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import RegisterSlice from "./features/RegisterSlice";
 import LoginSlice from "./features/LoginSlice";
-import CreateJobSlice from "./features/CreateJobSlice";
+import JobSlice from "./features/JobSlice";
 
 export const store = configureStore({
   reducer: {
     register: RegisterSlice,
     Login: LoginSlice,
-    createJob: CreateJobSlice,
+    job: JobSlice,
   },
 });
 

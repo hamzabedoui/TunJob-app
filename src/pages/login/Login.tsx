@@ -19,17 +19,21 @@ import { UserType } from "../../types/types";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const signIn = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await dispatch(loginUser({ email: email, password: password }));
-      if (response.meta.requestStatus === 'fulfilled') {
-        const userType = response.payload.userType; // Assuming the response contains user type
-        if (userType === UserType.Freelancer) {
+      const response = await dispatch(
+        loginUser({ email: email, password: password })
+      );
+      if (response.meta.requestStatus === "fulfilled") {
+        console.log(response.payload.user.__t);
+
+        const userType = response.payload.user.__t; // Assuming the response contains user type
+        if (userType === "Employee") {
           navigate("/main-freelancer");
-        } else if (userType === UserType.Recruiter) {
+        } else if (userType === "Manager") {
           navigate("/main-manager/dashboard");
         } else {
           console.log("Unknown user type");
@@ -40,7 +44,7 @@ const Login = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   return (
     <>
       <Container maxWidth="xs">
@@ -51,8 +55,7 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          }}>
           <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
             <LockOutlined />
           </Avatar>
@@ -88,8 +91,7 @@ const Login = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={signIn}
-            >
+              onClick={signIn}>
               Login
             </Button>
             <Grid container justifyContent={"flex-end"}>

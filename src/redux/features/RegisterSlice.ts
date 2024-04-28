@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store";
-import { log } from "console";
 
 interface RegisterDataManager {
   username: string;
@@ -29,7 +28,7 @@ export const registerMg: any = createAsyncThunk(
       const response: AxiosResponse<any> = await axios.post(
         "http://localhost:5000/api/v1/auth/registermg",
         registerData,
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
       return response.data;
@@ -45,12 +44,10 @@ export const registerFr: any = createAsyncThunk(
       const response: AxiosResponse<any> = await axios.post(
         "http://localhost:5000/api/v1/auth/registeremp",
         registerData,
-        { withCredentials: true },
+        { withCredentials: true }
       );
 
       return response.data;
-      
-      
     } catch (error) {
       throw error;
     }
@@ -86,12 +83,11 @@ const registerSlice = createSlice({
       .addCase(registerFr.fulfilled, (state) => {
         state.loading = false;
         console.log(state);
-        
       })
       .addCase(registerFr.rejected, (state, action) => {
         state.loading = false;
         console.log(action);
-        
+
         state.error = action.error.message || "Registration failed";
       });
   },
