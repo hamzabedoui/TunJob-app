@@ -10,14 +10,37 @@ import {
   Grid,
 } from "@mui/material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../login/LoginPage.scss";
+import { loginUser } from "../../redux/features/LoginSlice";
+import { useDispatch } from "react-redux";
+import { UserType } from "../../types/types";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = () => {};
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const signIn = async (e: any) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(loginUser({ email: email, password: password }));
+      if (response.meta.requestStatus === 'fulfilled') {
+        const userType = response.payload.userType; // Assuming the response contains user type
+        if (userType === UserType.Freelancer) {
+          navigate("/main-freelancer");
+        } else if (userType === UserType.Recruiter) {
+          navigate("/main-manager/dashboard");
+        } else {
+          console.log("Unknown user type");
+        }
+      } else {
+        console.log("Permission denied");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <>
       <Container maxWidth="xs">
@@ -65,7 +88,7 @@ const Login = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={handleLogin}
+              onClick={signIn}
             >
               Login
             </Button>

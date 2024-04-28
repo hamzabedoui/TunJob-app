@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { createJob } from '../../redux/features/CreateJobSlice'; // Import the createJob action
 
 const DashboardManager: React.FC = () => {
   const [jobDetails, setJobDetails] = useState({
@@ -9,6 +11,8 @@ const DashboardManager: React.FC = () => {
     location: '',
     salary: '',
   });
+
+  const dispatch = useDispatch();
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -22,22 +26,14 @@ const DashboardManager: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Here you can handle form submission, e.g., send data to server
-    console.log('Job details:', jobDetails);
-    // Reset form fields
-    setJobDetails({
-      title: '',
-      description: '',
-      requirements: '',
-      location: '',
-      salary: '',
-    });
+    dispatch(createJob(jobDetails)); // Dispatch the createJob action with job details
   };
 
   return (
     <div>
       <Typography variant="h5">Create Job Post</Typography>
       <form onSubmit={handleSubmit}>
+        {/* Text fields for job details */}
         <TextField
           name="title"
           label="Title"

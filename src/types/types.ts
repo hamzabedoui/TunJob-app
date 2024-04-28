@@ -19,3 +19,12 @@ export enum AcademicLevel {
   MasterDegree = "Master Degree",
   EngineeringDegree = "Engineering Degree ",
 }
+
+export interface JobDetails {
+  title: string;
+  description: string;
+  requirements: string;
+  location: string;
+  salary: string;
+  // Add additional fields as needed
+}
