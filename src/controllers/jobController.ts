@@ -14,7 +14,14 @@ export const getAllJobs = asyncHandler(async (req: Request, res: Response) => {
   const jobs = await Job.find();
   res.status(StatusCodes.OK).json({ jobs });
 });
-
+export const getJobs = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    const userID: any = req.user;
+    const jobs = await Job.find({ manager: userID });
+    /* if (!jobs) throw new NotFoundError("no jobs yet"); */
+    res.status(StatusCodes.OK).json({ jobs, count: jobs.length });
+  }
+);
 export const createJob = asyncHandler(
   async (req: Request | any, res: Response) => {
     const { position, status, jobType, jobLocation } = req.body;

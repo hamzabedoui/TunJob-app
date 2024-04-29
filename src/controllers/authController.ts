@@ -9,13 +9,20 @@ import {
   NotFoundError,
 } from "../errors";
 import { Request, Response } from "express";
+export const getMe = asyncHandler(async (req: Request | any, res: Response) => {
+  const user = req.user;
+  if (!user) {
+    throw new BadRequestError("User doesn't exist");
+  }
+  res.json(user);
+});
 export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await User.find();
   res.status(StatusCodes.OK).json({ users });
 });
 export const registerMg = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password, company } = req.body;
-  if (!email || !password || !name || !company) {
+  const { username, email, password, company } = req.body;
+  if (!email || !password || !username || !company) {
     throw new BadRequestError("please provide all credentials");
   }
   const duplicate = await Manager.findOne({ email });
@@ -27,8 +34,16 @@ export const registerMg = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password, academicLevel } = req.body;
-  if (!email || !password || !name || !academicLevel) {
+  const { username, email, password, academicLevel, location, jobTitle } =
+    req.body;
+  if (
+    !email ||
+    !password ||
+    !username ||
+    !academicLevel ||
+    !location ||
+    !jobTitle
+  ) {
     throw new BadRequestError("please provide all credentials");
   }
   const duplicate = await Employee.findOne({ email });
@@ -38,8 +53,10 @@ export const registerEmp = asyncHandler(async (req: Request, res: Response) => {
     const employee = await Employee.create({
       email,
       password,
-      name,
+      username,
       academicLevel,
+      location,
+      jobTitle,
     });
     res.status(StatusCodes.CREATED).json(employee);
   }

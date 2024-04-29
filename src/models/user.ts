@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import jwt, { Secret } from "jsonwebtoken";
 
 export interface UserDocument extends Document {
-  name: string;
+  username: string;
   email: string;
   password: string;
   resetToken: string;
@@ -15,7 +15,7 @@ export interface UserDocument extends Document {
 export interface UserModel extends Model<UserDocument> {}
 
 const userSchema: Schema<UserDocument> = new mongoose.Schema({
-  name: {
+  username: {
     type: String,
     required: [true, "Please provide name"],
     minlength: 3,
