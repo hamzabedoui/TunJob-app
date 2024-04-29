@@ -6,6 +6,7 @@ import { MainManager } from "../src/components/manager/MainManager";
 import DashboardManager from "./components/manager/DashboardManager ";
 import MainFreelancer from "./components/freelancer/MainFreelancer";
 import FreelancerProfile from "./components/freelancer/FreelancerProfile";
+import PostedJobs from "./components/manager/PostedJobs";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               path="/main-manager/dashboard"
               element={<DashboardManager />}
             />
+            <Route path="/main-manager/posted-jobs" element={<PostedJobs />} />
           </Route>
         </Routes>
       </Router>

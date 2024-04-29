@@ -4,7 +4,7 @@ import { JobDetails } from "../../types/types";
 import Cookies from "js-cookie";
 
 export const createJob: any = createAsyncThunk(
-  "jobs/createJob",
+  "create/createJob",
   async (JobDetails: JobDetails, thunkAPI: any) => {
     try {
       const response: AxiosResponse<any> = await axios.post(
@@ -19,6 +19,17 @@ export const createJob: any = createAsyncThunk(
     }
   }
 );
+export const getJobs: any = createAsyncThunk("get/getJobs", async () => {
+  try {
+    const response: AxiosResponse<any> = await axios.get(
+      "http://localhost:5000/api/v1/jobs",
+      { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
 interface JobState {
   loading: boolean;
   error: string | null;
@@ -51,6 +62,19 @@ const JobSlice = createSlice({
       .addCase(createJob.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Job creation  failed";
+      })
+      .addCase(getJobs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getJobs.fulfilled, (state, action) => {
+        state.loading = false;
+
+        state.jobs = action.payload.jobs;
+      })
+      .addCase(getJobs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Couldn't get your jobs";
       });
   },
 });

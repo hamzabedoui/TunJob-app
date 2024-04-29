@@ -11,7 +11,7 @@ interface LoginData {
 interface LoginState {
   loading: boolean;
   error: string | null;
-  userInfos:any
+  userInfos: any;
 }
 export const loginUser: any = createAsyncThunk(
   "login/LoginUser",
@@ -19,25 +19,24 @@ export const loginUser: any = createAsyncThunk(
     try {
       const response: AxiosResponse<any> = await axios.post(
         "http://localhost:5000/api/v1/auth/login",
-        
-        loginData,
-        { withCredentials: true },
-        
 
-        );
-        return response.data;
-      } catch (error) {
-        throw error;
-      }
+        loginData,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
     }
-    );
+  }
+);
 export const getUserDetails: any = createAsyncThunk(
   "getMe/GetUser",
   async () => {
     try {
       const response: AxiosResponse<any> = await axios.get(
-        "http://localhost:5000/api/v1/auth/get-me",{headers:{"Authorization":`Bearer ${Cookies.get('token')}`}},
-      );    
+        "http://localhost:5000/api/v1/auth/userinfo",
+        { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }
+      );
       return response.data;
     } catch (error) {
       throw error;
@@ -48,7 +47,7 @@ export const getUserDetails: any = createAsyncThunk(
 const initialState: LoginState = {
   loading: false,
   error: null,
-  userInfos:{}
+  userInfos: {},
 };
 
 const loginSlice = createSlice({
@@ -72,18 +71,16 @@ const loginSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(getUserDetails.fulfilled, (state,action) => {
+      .addCase(getUserDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.userInfos=action.payload
-        
+        state.userInfos = action.payload;
       })
       .addCase(getUserDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "cannot get user infos";
-      })
-      ;
+      });
   },
 });
 
 export default loginSlice.reducer;
-export const selectLogin = (state: RootState) => state.Login;
+export const selectLogin = (state: RootState) => state.login;

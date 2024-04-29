@@ -6,6 +6,7 @@ interface RegisterDataManager {
   username: string;
   password: string;
   email: string;
+  company: string;
 }
 interface RegisterDataFreelancer {
   username: string;

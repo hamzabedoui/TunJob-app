@@ -25,16 +25,16 @@ const RecruiterSidebar: React.FC<{
             <ListItem button component={Link} to="/main-manager/dashboard">
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button component={Link} to="/posted-jobs">
+            <ListItem button component={Link} to="/main-manager/posted-jobs">
               <ListItemText primary="Posted Jobs" />
             </ListItem>
-            <ListItem button component={Link} to="/candidates">
+            <ListItem button component={Link} to="/main-manager/candidates">
               <ListItemText primary="View Candidates" />
             </ListItem>
-            <ListItem button component={Link} to="/profile">
+            <ListItem button component={Link} to="/main-manager/profile">
               <ListItemText primary="Profile" />
             </ListItem>
-            <ListItem button component={Link} to="/settings">
+            <ListItem button component={Link} to="/main-manager/settings">
               <ListItemText primary="Settings" />
             </ListItem>
           </div>

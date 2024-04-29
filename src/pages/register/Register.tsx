@@ -30,6 +30,7 @@ const Register: React.FC = () => {
   const [jobTitle, setJobTitle] = useState("");
   const [academicLevel, setAcademicLevel] = useState("");
   const [location, setLocation] = useState("");
+  const [company, setCompany] = useState("");
 
   const [userType, setUserType] = useState<UserType>(UserType.Freelancer);
 
@@ -40,18 +41,26 @@ const Register: React.FC = () => {
   const signUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      let formData = {
-        username,
-        email,
-        password,
-        academicLevel,
-        jobTitle,
-        location,
-      };
+      let formData;
+      userType === UserType.Freelancer
+        ? (formData = {
+            username,
+            email,
+            password,
+            academicLevel,
+            jobTitle,
+            location,
+          })
+        : (formData = {
+            username,
+            email,
+            password,
+            company,
+          });
       const response = await (userType === UserType.Freelancer
         ? dispatch(registerFr(formData))
         : dispatch(registerMg(formData)));
-      console.log(response);
+      console.log(userType);
 
       if (response.meta.requestStatus === "fulfilled") {
         navigate("/login");
@@ -77,8 +86,7 @@ const Register: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-        }}
-      >
+        }}>
         <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
           <LockOutlined />
         </Avatar>
@@ -127,6 +135,23 @@ const Register: React.FC = () => {
                 fullWidth
               />
             </div>
+            {userType === UserType.Recruiter && (
+              <>
+                <div className="infos">
+                  <TextField
+                    type="text"
+                    name="company"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    required
+                    className="MuiInputBase-input"
+                    label="company"
+                    autoFocus
+                    fullWidth
+                  />
+                </div>
+              </>
+            )}
             {userType === UserType.Freelancer && (
               <>
                 <div className="infos">
@@ -162,8 +187,7 @@ const Register: React.FC = () => {
                     name="academicLevel"
                     displayEmpty
                     required
-                    className="Academic-levele-selector"
-                  >
+                    className="Academic-levele-selector">
                     <MenuItem value="" disabled>
                       Select Academic Level
                     </MenuItem>
@@ -181,16 +205,14 @@ const Register: React.FC = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <a
                 className="MuiTypography-root MuiLink-root MuiTypography-body2 MuiLink-underlineHover MuiTypography-colorPrimary"
-                href="/login"
-              >
+                href="/login">
                 Already have an account? Sign in
               </a>
             </Grid>

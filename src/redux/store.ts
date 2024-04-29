@@ -6,7 +6,7 @@ import JobSlice from "./features/JobSlice";
 export const store = configureStore({
   reducer: {
     register: RegisterSlice,
-    Login: LoginSlice,
+    login: LoginSlice,
     job: JobSlice,
   },
 });

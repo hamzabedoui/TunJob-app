@@ -26,6 +26,12 @@ const DashboardManager: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(createJob(jobDetails));
+    setJobDetails({
+      status: "",
+      position: "",
+      jobType: "",
+      jobLocation: "",
+    });
   };
 
   return (

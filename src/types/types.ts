@@ -17,11 +17,11 @@ export enum AcademicLevel {
   BaccalaureateDegree = "Baccalaureate Degree",
   LicenseDegree = "Licence Degree",
   MasterDegree = "Master Degree",
-  EngineeringDegree = "Engineering Degree ",
+  EngineeringDegree = "Engineering Degree",
 }
 
 export interface JobDetails {
-  company: string;
+  status: string;
   position: string;
   jobType: string;
   jobLocation: string;
