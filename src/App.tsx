@@ -7,6 +7,8 @@ import DashboardManager from "./components/manager/DashboardManager ";
 import MainFreelancer from "./components/freelancer/MainFreelancer";
 import FreelancerProfile from "./components/freelancer/FreelancerProfile";
 import PostedJobs from "./components/manager/PostedJobs";
+import SearchJob from "./components/freelancer/SearchJob";
+import ManagerProfile from "./components/manager/ManagerProfile";
 
 const App = () => {
   return (
@@ -30,6 +32,7 @@ const App = () => {
                 />
               }
             />
+            <Route path="/main-freelancer/search-job" element={<SearchJob />} />
           </Route>
           <Route path="/main-manager" element={<MainManager />}>
             <Route
@@ -37,6 +40,14 @@ const App = () => {
               element={<DashboardManager />}
             />
             <Route path="/main-manager/posted-jobs" element={<PostedJobs />} />
+            <Route path="/main-manager/profile" element={
+                <ManagerProfile
+                  /* userType="F" */
+                  username=""
+                  email=""
+                  company=""
+                />
+              } />
           </Route>
         </Routes>
       </Router>
