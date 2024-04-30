@@ -5,8 +5,10 @@ import {
   login,
   getAllUsers,
   getMe,
+  logout,
 } from "../controllers/authController";
 import { authentification } from "../middleware/authentification";
+
 export const authRouter = express.Router();
 
 authRouter
@@ -14,4 +16,5 @@ authRouter
   .post("/registeremp", registerEmp)
   .post("/login", login)
   .get("/all", getAllUsers)
-  .get("/userinfo", authentification, getMe);
+  .get("/userinfo", authentification, getMe)
+  .post("/logout", authentification, logout);

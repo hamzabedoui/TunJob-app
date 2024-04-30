@@ -92,3 +92,9 @@ export const login = asyncHandler(
     }
   }
 );
+export const logout = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    res.clearCookie("token");
+    res.status(StatusCodes.OK).json({ message: "Logout successful" });
+  }
+);
