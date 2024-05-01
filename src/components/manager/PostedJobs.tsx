@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getJobs } from "../../redux/features/JobSlice";
 import Job from "../job/Job";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, TextField } from "@mui/material";
 import "../manager/PostedJobs.scss";
-
+import { deleteJob, editJob } from "../../redux/features/JobSlice";
 
 const PostedJobs: React.FC = () => {
   const dispatch = useDispatch();
@@ -14,14 +14,40 @@ const PostedJobs: React.FC = () => {
     dispatch(getJobs());
   }, [dispatch]);
 
+  const [editJobId, setEditJobId] = useState("");
+  const [editedJobDetails, setEditedJobDetails] = useState({
+    status: "",
+    position: "",
+    jobType: "",
+    jobLocation: "",});
+
   const handleDelete = (jobId: string) => {
-    // Dispatch action to delete job with given jobId
+    dispatch(deleteJob(jobId));
     console.log("Deleting job with ID:", jobId);
   };
 
-  const handleEdit = (jobId: string) => {
-    // Dispatch action to navigate to job edit page with given jobId
-    console.log("Editing job with ID:", jobId);
+  const handleEdit = (jobId: string, jobDetails: any) => {
+    setEditJobId(jobId);
+    setEditedJobDetails(jobDetails);
+  };
+
+  const handleSaveEdit = () => {
+    dispatch(editJob({ jobId: editJobId, updatedDetails: editedJobDetails }));
+    setEditJobId("");
+    setEditedJobDetails({
+      status: "",
+      position: "",
+      jobType: "",
+      jobLocation: "",
+    });
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setEditedJobDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
   };
 
   return (
@@ -31,28 +57,62 @@ const PostedJobs: React.FC = () => {
         {jobs?.length > 0 &&
           jobs?.map((job: any) => (
             <div key={job._id} className="job">
-              <Job
-                status={job.status}
-                position={job.position}
-                jobType={job.jobType}
-                jobLocation={job.jobLocation}
-              />
-              <div className="buttons-container">
-                <Button 
-                  variant="contained" 
-                  color="error"
-                  onClick={() => handleDelete(job._id)}
-                >
-                  Delete
-                </Button>
-                <Button 
-                  variant="contained" 
-                  color="primary"
-                  onClick={() => handleEdit(job._id)}
-                >
-                  Edit
-                </Button>
-              </div>
+              {editJobId === job._id ? (
+                <>
+                  <div className="job-input">
+                  <TextField
+                    name="status"
+                    label="Status"
+                    value={editedJobDetails.status}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    name="position"
+                    label="Position"
+                    value={editedJobDetails.position}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    name="jobType"
+                    label="Job Type"
+                    value={editedJobDetails.jobType}
+                    onChange={handleInputChange}
+                  />
+                  <TextField
+                    name="jobLocation"
+                    label="Job Location"
+                    value={editedJobDetails.jobLocation}
+                    onChange={handleInputChange}
+                  />
+                    <Button onClick={handleSaveEdit} className="save-input">Save</Button>
+                    </div>
+                </>  
+              ) : (
+                <>
+                  <Job
+                    status={job.status}
+                    position={job.position}
+                    jobType={job.jobType}
+                    jobLocation={job.jobLocation}
+                  />
+                  <div className="buttons-container">
+                    <Button 
+                      variant="contained" 
+                      color="error"
+                      onClick={() => handleDelete(job._id)}
+                    >
+                      Delete
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      color="primary"
+                      onClick={() => handleEdit(job._id, job)}
+                    >
+                      Edit
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           ))}
       </div>
