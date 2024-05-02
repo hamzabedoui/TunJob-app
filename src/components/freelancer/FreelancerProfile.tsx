@@ -1,10 +1,14 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Typography, Paper, Avatar } from "@mui/material";
+import { Typography, Paper, Avatar, Button } from "@mui/material";
 import "../manager/ProfileStyle.scss"; // Import the SCSS file
 
 const FreelancerProfile: React.FC<any> = ({ userName, userAvatar }: { userName: string; userAvatar?: string; }) => {
   const { userInfos } = useSelector((store: any) => store.login);
+  const handleEditProfile = () => {
+    console.log("edit profile");
+    
+  };
 
   return (
     <Paper elevation={3} className="manager-profile-container">
@@ -14,7 +18,7 @@ const FreelancerProfile: React.FC<any> = ({ userName, userAvatar }: { userName: 
           alt={userName}
           src={userAvatar}
           className="UserProfileAvatar"
-          sx={{ width: "11rem", height: "10rem" }} // Adjust the size here
+          sx={{ width: "8rem", height: "8rem" }} // Adjust the size here
         /> 
         <Typography variant="body1" className="info-item">
           <span className="info-label">Username:</span> {userInfos.username}
@@ -35,6 +39,7 @@ const FreelancerProfile: React.FC<any> = ({ userName, userAvatar }: { userName: 
           <Typography variant="body1" className="info-item">
             <span className="info-label">Location:</span> {userInfos.location}
           </Typography>
+          <Button variant="contained" color="primary" onClick={handleEditProfile}>Edit Profile</Button>
         </>
       </div>
     </Paper>
