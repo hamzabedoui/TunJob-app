@@ -14,13 +14,15 @@ import { Link, useNavigate } from "react-router-dom";
 import "../login/LoginPage.scss";
 import { loginUser } from "../../redux/features/LoginSlice";
 import { useDispatch } from "react-redux";
-import { UserType } from "../../types/types";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const signIn = async (e: any) => {
     e.preventDefault();
     try {
@@ -33,18 +35,51 @@ const Login = () => {
         const userType = response.payload.user.__t; // Assuming the response contains user type
         if (userType === "Employee") {
           navigate("/main-freelancer");
+          toast.success("Logged in successfully!", {
+            position: "top-right",
+            autoClose: 3000, // Close the toast after 3 seconds
+            hideProgressBar: false, // Display a progress bar
+            // transition: toast.slideDown, // Apply slide down animation
+            draggable: true, // Allow users to drag the toast
+            closeOnClick: false, // Do not close toast when clicked
+          });
         } else if (userType === "Manager") {
           navigate("/main-manager/dashboard");
+          toast.success("Logged in successfully!", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            // transition: toast.slideDown,
+            draggable: true,
+            closeOnClick: false,
+          });
         } else {
           console.log("Unknown user type");
+          toast.error("Login failed. Please try again.", {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            // transition: toast.slideDown,
+            draggable: true,
+            closeOnClick: false,
+          });
         }
       } else {
         console.log("Permission denied");
+        toast.error("Login failed. Please try again.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          // transition: toast.slideDown,
+          draggable: true,
+          closeOnClick: false,
+        });
       }
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <>
       <Container maxWidth="xs">
@@ -55,7 +90,8 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}>
+          }}
+        >
           <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
             <LockOutlined />
           </Avatar>
@@ -91,7 +127,8 @@ const Login = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={signIn}>
+              onClick={signIn}
+            >
               Login
             </Button>
             <Grid container justifyContent={"flex-end"}>

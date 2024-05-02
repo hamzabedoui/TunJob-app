@@ -9,11 +9,14 @@ import FreelancerProfile from "./components/freelancer/FreelancerProfile";
 import PostedJobs from "./components/manager/PostedJobs";
 import SearchJob from "./components/freelancer/SearchJob";
 import ManagerProfile from "./components/manager/ManagerProfile";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
     <div>
       <Router>
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
