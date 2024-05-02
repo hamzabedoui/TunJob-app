@@ -25,4 +25,10 @@ export interface JobDetails {
   position: string;
   jobType: string;
   jobLocation: string;
+  manager?: string;
+}
+export interface AppDetails {
+  coverLetter: string;
+  startDate: Date;
+  job: string;
 }

@@ -11,6 +11,11 @@ const Job: React.FC<JobDetails> = (props) => {
       <Typography variant="body1">Position: {props.position}</Typography>
       <Typography variant="body1">Type: {props.jobType}</Typography>
       <Typography variant="body1">Location: {props.jobLocation}</Typography>
+      {props.manager ? (
+        <Typography variant="body1">Manager: {props.manager}</Typography>
+      ) : (
+        ""
+      )}
     </Paper>
   );
 };

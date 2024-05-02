@@ -1,0 +1,29 @@
+// application.scss
+
+.modal {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal form .MuiTextField-root {
+  margin-bottom: 20px;
+}
+
+.modal form .MuiButton-root {
+  align-self: flex-end;
+}

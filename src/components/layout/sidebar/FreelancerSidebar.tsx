@@ -23,13 +23,16 @@ const FreelancerSidebar: React.FC<{
         </div>
         <List component="nav">
           <div className="nav-side">
-            <ListItem button component={Link} to="/search-jobs">
+            <ListItem button component={Link} to="/main-freelancer/search-jobs">
               <ListItemText primary="Search Jobs" />
             </ListItem>
-            <ListItem button component={Link} to="/applications">
+            <ListItem
+              button
+              component={Link}
+              to="/main-freelancer/applications">
               <ListItemText primary="View Applications" />
             </ListItem>
-            <ListItem button component={Link} to="/saved-jobs">
+            <ListItem button component={Link} to="/main-freelancer/saved-jobs">
               <ListItemText primary="Saved Jobs" />
             </ListItem>
             <ListItem button component={Link} to="/main-freelancer/profile">

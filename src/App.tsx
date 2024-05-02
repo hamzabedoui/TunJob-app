@@ -32,7 +32,10 @@ const App = () => {
                 />
               }
             />
-            <Route path="/main-freelancer/search-job" element={<SearchJob />} />
+            <Route
+              path="/main-freelancer/search-jobs"
+              element={<SearchJob />}
+            />
           </Route>
           <Route path="/main-manager" element={<MainManager />}>
             <Route
@@ -40,14 +43,17 @@ const App = () => {
               element={<DashboardManager />}
             />
             <Route path="/main-manager/posted-jobs" element={<PostedJobs />} />
-            <Route path="/main-manager/profile" element={
+            <Route
+              path="/main-manager/profile"
+              element={
                 <ManagerProfile
                   /* userType="F" */
                   username=""
                   email=""
                   company=""
                 />
-              } />
+              }
+            />
           </Route>
         </Routes>
       </Router>

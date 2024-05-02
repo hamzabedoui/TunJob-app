@@ -25,7 +25,19 @@ export const getJobs: any = createAsyncThunk("get/getJobs", async () => {
       "http://localhost:5000/api/v1/jobs",
       { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }
     );
-    
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+export const getAllJobs: any = createAsyncThunk("get/getAllJobs", async () => {
+  try {
+    const response: AxiosResponse<any> = await axios.get(
+      "http://localhost:5000/api/v1/jobs/all",
+      { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }
+    );
+
     return response.data;
   } catch (error) {
     throw error;
@@ -49,14 +61,17 @@ export const deleteJob: any = createAsyncThunk(
 
 export const editJob: any = createAsyncThunk(
   "edit/editJob",
-  async (payload: { jobId: string, updatedDetails: JobDetails }, thunkAPI: any) => {
+  async (
+    payload: { jobId: string; updatedDetails: JobDetails },
+    thunkAPI: any
+  ) => {
     try {
       const response: AxiosResponse<any> = await axios.put(
         `http://localhost:5000/api/v1/jobs/${payload.jobId}`,
         payload.updatedDetails,
         { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }
       );
-      response.status === 200 && thunkAPI.dispatch(getJobs)
+      response.status === 200 && thunkAPI.dispatch(getJobs);
       return response.data;
     } catch (error) {
       throw error;
@@ -109,6 +124,18 @@ const JobSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Couldn't get your jobs";
       })
+      .addCase(getAllJobs.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllJobs.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allJobs = action.payload.jobs;
+      })
+      .addCase(getAllJobs.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Couldn't get your jobs";
+      })
       .addCase(deleteJob.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -116,7 +143,7 @@ const JobSlice = createSlice({
       .addCase(deleteJob.fulfilled, (state, action) => {
         state.loading = false;
         // Remove the deleted job from the state
-        state.jobs = state.jobs.filter(job => job.id !== action.payload);
+        state.jobs = state.jobs.filter((job) => job.id !== action.payload);
       })
       .addCase(deleteJob.rejected, (state, action) => {
         state.loading = false;
@@ -129,14 +156,14 @@ const JobSlice = createSlice({
       .addCase(editJob.fulfilled, (state, action) => {
         state.loading = false;
         // Update the job with the edited details in the state
-        state.jobs = state.jobs.map(job => {
+        state.jobs = state.jobs.map((job) => {
           if (job._id === action.payload._id) {
             return action.payload;
           }
           return job;
         });
       })
-      
+
       .addCase(editJob.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Job editing failed";
