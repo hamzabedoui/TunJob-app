@@ -37,6 +37,13 @@ export const createApplications = asyncHandler(
     if (!job) {
       throw new NotFoundError("job not found");
     }
+    const existingApplication = await App.findOne({
+      job: job._id,
+      employee: empID,
+    });
+    if (existingApplication) {
+      throw new Error("You cannot make two applications for the same job.");
+    }
     const application = await App.create({
       coverLetter,
       startDate,
