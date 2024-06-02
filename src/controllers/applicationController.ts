@@ -55,7 +55,7 @@ export const createApplications = asyncHandler(
     await job.save();
     res
       .status(StatusCodes.CREATED)
-      .json({ application, message: "comment is created" });
+      .json({ application, message: "application is created" });
   }
 );
 

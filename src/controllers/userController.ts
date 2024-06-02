@@ -43,3 +43,26 @@ export const updateUser = asyncHandler(
       .json({ message: "User updated successfully", user });
   }
 );
+export const deleteUser = asyncHandler(
+  async (req: Request | any, res: Response) => {
+    const userID = req.user.id;
+    const { email, password } = req.body;
+    if (!userID) {
+      throw new BadRequestError("User doesn't exist");
+    }
+    if (!email || !password) {
+      throw new BadRequestError("Please provide your email and password");
+    }
+    const manager = await Manager.findById(userID);
+    const employee = await Employee.findById(userID);
+    if (manager) {
+      await Manager.findOneAndDelete({ _id: userID });
+    } else if (employee) {
+      await Employee.findOneAndDelete({ _id: userID });
+    } else {
+      throw new BadRequestError("User doesn't exist");
+    }
+
+    res.status(StatusCodes.OK).json("The account is deleted successfully");
+  }
+);
