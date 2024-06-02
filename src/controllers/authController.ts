@@ -3,12 +3,22 @@ import Manager from "../models/manager";
 import Employee from "../models/employee";
 import { StatusCodes } from "http-status-codes";
 import asyncHandler from "express-async-handler";
+import nodemailer from "nodemailer";
 import {
   BadRequestError,
   UnauthenticatedError,
   NotFoundError,
 } from "../errors";
 import { Request, Response } from "express";
+
+const transporter = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+});
 export const getMe = asyncHandler(async (req: Request | any, res: Response) => {
   const user = req.user;
   if (!user) {
@@ -99,25 +109,23 @@ export const logout = asyncHandler(
   }
 );
 
-/* export const requestPasswordReset = asyncHandler(
+export const requestPasswordReset = asyncHandler(
   async (req: Request | any, res: Response) => {
     const { email } = req.body;
-    let user;
-    (await Manager.find({ email }))
-      ? (user = Manager.findOne({ email }))
-      : (user = Employee.findOne({ email }));
+
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
       throw new BadRequestError("User doesn't exist");
     }
-    const token = await user?.generateToken();
+    const token = user?.generateToken();
 
     user.resetToken = token;
     user.resetTokenExpires = new Date(Date.now() + 30 * 60 * 1000);
     await user.save();
-    const resetLink = `http://localhost:3000/reset/${token}`; // Change this URL to your reset password page
+    const resetLink = `http://localhost:3000/reset/${token}`;
 
     const mailOptions = {
-      from: "haha@gmail.com",
+      from: "tunjob@gmail.com",
       to: user.email,
       subject: "Password Reset",
       html: `<p>Please click the following link to reset your password:</p><a href="${resetLink}">${resetLink}</a>`,
@@ -129,22 +137,21 @@ export const logout = asyncHandler(
   }
 );
 export const resetPassword = asyncHandler(
-  async (req: Request<unknown, unknown, any>, res: Response) => {
+  async (req: Request, res: Response) => {
     const { password } = req.body;
     const { token }: any = req.params;
-    const user = await UserRepository.find({
+    const user = await User.findOne({
       resetToken: token,
       resetTokenExpires: { $gte: new Date(Date.now()) },
     });
     if (!user) {
-      throw new BadTokenError("Invalid or expired token");
+      throw new UnauthenticatedError("Invalid or expired token");
     }
     user.password = password;
-    user.resetToken = undefined;
-    user.resetTokenExpires = undefined;
+    user.resetToken = "";
+    user.resetTokenExpires = new Date(0);
     await user.save();
 
-    res.json({ message: "Password reset successful" });
+    res.status(StatusCodes.OK).json({ message: "Password reset successful" });
   }
 );
- */
